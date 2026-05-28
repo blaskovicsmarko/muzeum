@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Múzeum</title>
+
+<style>
+
+
+
+.back-button{
+    position:absolute;
+    top:20px;
+    left:20px;
+    padding:15px 25px;
+    background:rgba(255,255,255,0.2);
+    border:2px solid white;
+    border-radius:40px;
+    color:white;
+    cursor:pointer;
+    font-size:20px;
+    transition:0.3s;
+    z-index:1000;
+    backdrop-filter:blur(5px);
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,0.5);
+    transform:scale(1.1);
+}
+
+/* KILÉPŐ ANIMÁCIÓ */
+
+.fade-out{
+    animation:fadeBack 1s forwards;
+}
+
+@keyframes fadeBack{
+
+    0%{
+        opacity:1;
+        transform:scale(1);
+        filter:blur(0px);
+    }
+
+    100%{
+        opacity:0;
+        transform:scale(0.8);
+        filter:blur(10px);
+    }
+}
+
+
+
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #111;
+        color: white;
+        overflow: hidden;
+    }
+
+    .main {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        background: url('hatter.jpg') center/cover no-repeat;
+    }
+
+    .hotspot {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        background: rgba(255,255,255,0.2);
+        border: 2px solid white;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        transition: 0.3s;
+    }
+
+    .hotspot:hover {
+        background: rgba(255,255,255,0.5);
+        transform: scale(1.2);
+    }
+
+    .popup {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: rgba(0,0,0,0.9);
+        padding: 20px;
+        box-sizing: border-box;
+        transform: translateY(100%);
+        transition: 0.4s;
+        overflow-y: auto;
+    }
+
+    .popup.active {
+        transform: translateY(0);
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    .hotspot {
+    animation: pulse 3s infinite ease-in-out;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.3);}
+    50% { transform: scale(1.1); box-shadow: 0 0 25px rgba(255,255,255,0.6);}
+    100% { transform: scale(1); box-shadow: 0 0 10px rgba(255,255,255,0.3);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="main">
+    <div class="back-button" onclick="goBack()"> ⬅ Vissza </div>
+
+    <div class="hotspot" style="top:30%; left:40%;" data-id="1">Landler Jenő</div>
+    <div class="hotspot" style="top:60%; left:70%;" data-id="2">Ady Endre: A platánfa Álma</div>
+    <div class="hotspot" style="top:50%; left:20%;" data-id="3">Iskolatörténeti gyűjtemény</div>
+
+</div>
+
+
+<div class="popup" id="popup">
+    <div class="close" onclick="closePopup()">×</div>
+    <div id="content"></div>
+</div>
+
+<script>
+const contents = {
+    1: `
+        <h2>Landler Jenő</h2>
+        <p>Landler Jenő (1875–1928) magyar kommunista politikus, jogász, a 20. századi magyar munkásmozgalom egyik kulcsfigurája.</p>
+        <p>A kommün bukása után emigrált, a Kommunisták Magyarországi Pártja egyik vezetője maradt haláláig.</p>
+        <p>Az intézmény megnevezésében 35 éven át jelen volt Landler Jenő neve:</p>
+        <p>1955 – 1958 Landler Jenő Gépipari Technikum</p>
+        <p>1958 – 1965 Landler Jenő Híradásipari és Közlekedésgépészeti Technikum</p>
+        <p>1965 – 1970 Landler Jenő Gép- és Híradásipari Technikum</p>
+        <p>1970 – 1974 Landler Jenő Gép- és Híradásipari Technikum és Szakközépiskola</p>
+        <p>1974 – 1977 Landler Jenő Híradástechnikai és Gépészeti Szakközépiskola</p>
+        <p>1977 – 1990 Landler Jenő Gép- és Híradásipari Szakközépiskola</p>
+        
+        <img src="images\\55_Landler Jenő.jpg" style="width:95%">
+    `,
+    2: `
+        <h2>Ady Endre: A platánfa álma</h2>
+        <p>A Nap huga, zöld szemü lány,
+(Kit imádnak álom-vitézek)
+Megszánt egy holdas éjjelen
+És megigézett.</p>
+ 
+<p>Két lábam elhült s szétbomolt
+Gyökerekként a mélybe szállva
+S itt állok a fehér mezőn,
+Mint árva platánfa.</p>
+ 
+<p>Girhes, szomorú derekam
+Szökkenve büszke lombot ontott,
+Lombom a felhőket veri
+S elhagytak a gondok.</p>
+ 
+<p>Állok: várom a Nap hugát
+Némán a nagy, éji mezőben
+S koronámról hull a levél
+Zörgőn, búsan, rőten.</p>
+</p>
+
+ <img src="images\\18_platán.jpg" style="width:95%">
+    `,
+    3: `
+        <h2>iskolatörténeti gyűjtemény</h2>
+        <p>1927 óta működő intézményünk 114-es termében, korábban naplószobájában, kapott helyett 2022 novemberében a megújult iskolatörténeti gyűjtemény. </p>
+<p>Ennek a gyűjteménynek alapjául az iskola alagsorában 20 éven át működő múzeum anyaga és Urbán Kornélnak – iskolánk egykori diákjának és későbbi mérnöktanárának – hagyatéka szolgált. Az ajtón elhelyezett táblán szereplő felirat: „Iskolatörténeti gyűjtemény Urbán Kornél emlékére” is ezt hirdeti. Még a 2002-ben, iskolánk fennállásának 75. évfordulójára alapított Iskola- és technikatörténeti  gyűjtemény az ERASMUS+ “Sustainability- Preserving Europe for the Future Generations” projekt keretében és eredményeként újult meg intézményünk 95. tanévében. Az ünnepélyes átadás 2022. november 9-én volt.</p>
+<p>A kibővített múzeumban igyekeztünk megmutatni Urbán Kornél hagyatékának az iskolára vonatkozó jelentős részét. Ezért is választottunk a gyűjtemény méltó mottójaként az alábbi Ipolyi Arnold idézetet:</p>
+
+<p>„Őrizzük emlékeinket, gyűjtsük össze töredékeinket, nehogy végleg elvesszenek,
+s ezáltal is üresebb legyen a múlt, szegényebb a jelen, kétesebb a jövő.”
+</p>
+
+ <img src="images\\95_új múzeum.jpg" style="width:95%">
+    `
+};
+
+const hotspots = document.querySelectorAll('.hotspot');
+const popup = document.getElementById('popup');
+const content = document.getElementById('content');
+
+hotspots.forEach(h => {
+    h.addEventListener('click', () => {
+        const id = h.getAttribute('data-id');
+        content.innerHTML = contents[id];
+        popup.classList.add('active');
+    });
+});
+
+function closePopup() {
+    popup.classList.remove('active');
+}
+
+function goBack(){
+
+    const main = document.querySelector('.main');
+
+    // animáció indítása
+    main.classList.add('fade-out');
+
+    // visszalépés
+    setTimeout(() => {
+
+        window.location.href = "index.html";
+
+    }, 1000);
+
+}
+
+
+
+</script>
+
+</body>
+</html>
